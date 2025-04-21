@@ -9,9 +9,7 @@ class MoviesCatalogFavorites extends Model
     protected $fillable = [
         'id_tmdb',
         'movie_title',
-        'overview',
         'poster_path',
-        'release_date',
         'rating',
     ];
 }

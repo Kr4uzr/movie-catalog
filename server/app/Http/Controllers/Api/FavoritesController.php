@@ -41,7 +41,7 @@ class FavoritesController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $favorites = MoviesCatalogFavorites::select('id', 'id_tmdb', 'movie_title', 'overview', 'poster_path', 'release_date', 'rating', 'created_at')
+            $favorites = MoviesCatalogFavorites::select('id', 'id_tmdb', 'movie_title', 'poster_path', 'rating', 'created_at')
             ->orderByDesc('created_at')
             ->get();
 
