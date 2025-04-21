@@ -12,4 +12,4 @@ Route::get('/movies/searchById/{id_tmdb}', [TMDBController::class, 'searchById']
 # Favorites Controller
 Route::get('/favorites', [FavoritesController::class, 'index']);
 Route::post('/favorites', [FavoritesController::class, 'store']);
-Route::delete('/favorites/{id_tmdb}', [FavoritesController::class, 'delete']);
+Route::delete('/favorites/{id}', [FavoritesController::class, 'delete']);

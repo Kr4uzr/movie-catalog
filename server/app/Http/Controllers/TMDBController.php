@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -42,19 +43,20 @@ class TMDBController extends Controller
      */
     public function listTopRateds(Request $request): JsonResponse
     {
-        $page = $request->query('page', 1);
+        try {
+            $page = $request->query('page', 1);
 
-        $response = Http::get("https://api.themoviedb.org/3/movie/top_rated", [
-            'api_key' => env('TMDB_API_KEY'),
-            'language' => 'pt-BR',
-            'page' => $page,
-        ]);
+            $response = Http::get("https://api.themoviedb.org/3/movie/top_rated", [
+                'api_key' => env('TMDB_API_KEY'),
+                'language' => 'pt-BR',
+                'page' => $page,
+            ]);
 
-        if ($response->failed()) {
-            return response()->json(['error' => "Erro ao buscar filmes"], 500);
+            return response()->json($response->json());
+        } catch (Exception $e) {
+            return response()->json(['error' => "Erro ao buscar filmes: {$e->getMessage()}"], 500);
         }
 
-        return response()->json($response->json());
     }
 
     /**
@@ -88,19 +90,20 @@ class TMDBController extends Controller
      */
     public function searchByName(Request $request): JsonResponse
     {
-        $name = $request->query('name');
+        try {
+            $name = $request->query('name');
 
-        if (!$name) {
-            return response()->json(['error' => 'Necessário passar um nome para buscar!'], 400);
+            $response = Http::get("{$this->baseUrl}/search/movie", [
+                'api_key' => env('TMDB_API_KEY'),
+                'language' => $this->language,
+                'query' => $name,
+            ]);
+
+            return response()->json($response->json());
+        } catch (Exception $e) {
+            return response()->json(['error' => "Erro ao buscar filme pelo nome: {$e->getMessage()}"], 500);
         }
 
-        $response = Http::get("{$this->baseUrl}/search/movie", [
-            'api_key' => env('TMDB_API_KEY'),
-            'language' => $this->language,
-            'query' => $name,
-        ]);
-
-        return response()->json($response->json());
     }
 
 
@@ -142,15 +145,15 @@ class TMDBController extends Controller
      */
     public function searchById($id_tmdb): JsonResponse
     {
-        $response = Http::get("{$this->baseUrl}/movie/{$id_tmdb}", [
-            'api_key' => env('TMDB_API_KEY'),
-            'language' => $this->language,
-        ]);
+        try {
+            $response = Http::get("{$this->baseUrl}/movie/{$id_tmdb}", [
+                'api_key' => env('TMDB_API_KEY'),
+                'language' => $this->language,
+            ]);
 
-        if ($response->failed()) {
-            return response()->json(['error' => "Erro ao buscar filme"], 500);
+            return response()->json($response->json());
+        } catch (Exception $e) {
+            return response()->json(['error' => "Erro ao buscar filme pelo ID: {$e->getMessage()}"], 500);
         }
-
-        return response()->json($response->json());
     }
 }

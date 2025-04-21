@@ -111,18 +111,18 @@
                 }
             }
         },
-        "/api/favorites/{id_tmdb}": {
+        "/api/favorites/{id}": {
             "delete": {
                 "tags": [
                     "Favorites"
                 ],
                 "summary": "Remove um filme dos favoritos",
-                "operationId": "e5c1158a8595ba1791b928603d73fb7f",
+                "operationId": "0cf69332240f76f1c7967d2fd6f8a3dc",
                 "parameters": [
                     {
-                        "name": "id_tmdb",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID do filme no TMDB",
+                        "description": "ID do filme",
                         "required": true,
                         "schema": {
                             "type": "integer"
