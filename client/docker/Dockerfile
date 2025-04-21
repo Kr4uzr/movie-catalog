@@ -1,4 +1,8 @@
-FROM node:23.11.0
+##########################################################
+############ @author Bruno Rezende #######################
+##########################################################
+
+FROM node:23.11.0-alpine
 
 # Define o diretório de trabalho no container
 WORKDIR /app
