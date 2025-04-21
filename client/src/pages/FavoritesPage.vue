@@ -46,47 +46,47 @@
 import axios from 'axios';
 
 export default {
-  data() {
-    return {
-        favorites: [],
-        showModal: false, // Controla a exibição do modal
-        selectedMovie: null, // Armazena o filme selecionado
-    };
-  },
-  methods: {
-    async fetchFavorites() {
-        try {
-            const response = await axios.get('/api/favorites');
-            this.favorites = response.data.data;
-        } catch (error) {
-            console.error('Erro ao carregar favoritos:', error);
+    data() {
+        return {
+            favorites: [],
+            showModal: false, // Controla a exibição do modal
+            selectedMovie: null, // Armazena o filme selecionado
+        };
+    },
+    methods: {
+        async fetchFavorites() {
+            try {
+                const response = await axios.get('/api/favorites');
+                this.favorites = response.data.data;
+            } catch (error) {
+                console.error('Erro ao carregar favoritos:', error);
+            }
+        },
+        async removeFavorite(favorite) {
+            try {
+                await axios.delete(`/api/favorites/${favorite.id}`);
+                this.favorites = this.favorites.filter((fav) => fav.id !== favorite.id);
+            } catch (error) {
+                console.error('Erro ao remover favorito:', error);
+            }
+        },
+        openModal(favorite) {
+            this.selectedMovie = favorite; // Define o filme selecionado
+            this.showModal = true; // Exibe o modal
+        },
+        closeModal() {
+            this.showModal = false; // Fecha o modal
+            this.selectedMovie = null; // Limpa o filme selecionado
+        },
+        formatDate (date) {
+            if (!date) return 'Data não disponível';
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
         }
     },
-    async removeFavorite(favorite) {
-        try {
-            await axios.delete(`/api/favorites/${favorite.id}`);
-            this.favorites = this.favorites.filter((fav) => fav.id !== favorite.id);
-        } catch (error) {
-            console.error('Erro ao remover favorito:', error);
-        }
-    },
-    openModal(favorite) {
-        this.selectedMovie = favorite; // Define o filme selecionado
-        this.showModal = true; // Exibe o modal
-    },
-    closeModal() {
-        this.showModal = false; // Fecha o modal
-        this.selectedMovie = null; // Limpa o filme selecionado
-    },
-    formatDate (date) {
-        if (!date) return 'Data não disponível';
-        const [year, month, day] = date.split('-');
-        return `${day}/${month}/${year}`;
-    }
-  },
-  async created() {
+    async created() {
         this.fetchFavorites();
-  },
+    },
 };
 </script>
   

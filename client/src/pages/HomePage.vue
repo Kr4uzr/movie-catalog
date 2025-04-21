@@ -156,8 +156,6 @@
             try {
                 const response = await axios.post('/api/favorites', {
                     id_tmdb: movie.id,
-                    movie_title: movie.title,
-                    poster_path: movie.poster_path,
                 });
 
                 //Adiciona o novo favorito com o ID do banco retornado pelo backend
@@ -169,7 +167,7 @@
         };
 
         const isFavorite = (id_tmdb: number) => {
-        return favorites.value.some((fav) => fav.id_tmdb === id_tmdb);
+            return favorites.value.some((fav) => fav.id_tmdb === id_tmdb);
         };
 
         fetchMovies();
