@@ -12,7 +12,6 @@ class MoviesCatalogFavorites extends Model
         'overview',
         'poster_path',
         'release_date',
-        'trailer_url',
         'rating',
     ];
 }
