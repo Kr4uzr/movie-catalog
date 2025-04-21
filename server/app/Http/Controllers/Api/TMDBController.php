@@ -55,9 +55,9 @@ class TMDBController extends Controller
         try {
             $page = $request->query('page', 1);
 
-            $response = Http::get("https://api.themoviedb.org/3/movie/top_rated", [
+            $response = Http::get("{$this->baseUrl}/movie/top_rated", [
                 'api_key' => env('TMDB_API_KEY'),
-                'language' => 'pt-BR',
+                'language' => $this->language,
                 'page' => $page,
             ]);
 

@@ -5,47 +5,47 @@ services:
     image: mysql:8.0
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: movie_catalog
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: movie_catalog
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
     ports:
-      - "3306:3306"
+        - "3306:3306"
     volumes:
-      - dbdata:/var/lib/mysql
+        - dbdata:/var/lib/mysql
     networks:
-      - app-network
+        - app-network
     restart: unless-stopped
 
   app:
     build:
-      context: ./server
-      dockerfile: docker/Dockerfile
+        context: ./server
+        dockerfile: docker/Dockerfile
     container_name: laravel_app
     volumes:
-      - ./server:/var/www/html
+        - ./server:/var/www/html
     ports:
-      - "8000:8000"
+        - "8000:8000"
     depends_on:
-      - mysql
+        - mysql
     networks:
-      - app-network
+        - app-network
     restart: unless-stopped
 
   client:
     build:
-      context: ./client
-      dockerfile: docker/Dockerfile
+        context: ./client
+        dockerfile: docker/Dockerfile
     container_name: vue_client
     volumes:
-      - ./client:/app
+        - ./client:/app
     ports:
-      - "5173:5173"
+        - "5173:5173"
     networks:
-      - app-network
+        - app-network
     command: sh -c "npm install && npm run dev"
     depends_on:
-      - app
+        - app
     restart: unless-stopped
 
 networks:
