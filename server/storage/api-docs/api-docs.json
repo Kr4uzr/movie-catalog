@@ -1,0 +1,283 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/favorites": {
+            "get": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Lista os filmes favoritos",
+                "operationId": "d0d405a490978063e03bab284ca93c18",
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes favoritos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id_tmdb": {
+                                                "type": "integer"
+                                            },
+                                            "movie_title": {
+                                                "type": "string"
+                                            },
+                                            "poster_path": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Adiciona um filme aos favoritos",
+                "operationId": "38ecd9fddd24c32aa0704ad440f5cf9d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_tmdb",
+                                    "movie_title"
+                                ],
+                                "properties": {
+                                    "id_tmdb": {
+                                        "description": "ID do filme no TMDB",
+                                        "type": "integer"
+                                    },
+                                    "movie_title": {
+                                        "description": "Título do filme",
+                                        "type": "string"
+                                    },
+                                    "poster_path": {
+                                        "description": "Caminho do poster do filme",
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Filme adicionado aos favoritos com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id_tmdb": {
+                                            "type": "integer"
+                                        },
+                                        "movie_title": {
+                                            "type": "string"
+                                        },
+                                        "poster_path": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/favorites/{id_tmdb}": {
+            "delete": {
+                "tags": [
+                    "Favorites"
+                ],
+                "summary": "Remove um filme dos favoritos",
+                "operationId": "e5c1158a8595ba1791b928603d73fb7f",
+                "parameters": [
+                    {
+                        "name": "id_tmdb",
+                        "in": "path",
+                        "description": "ID do filme no TMDB",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Filme removido dos favoritos com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Filme não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/movies/list-top-rateds": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Retorna filmes mais bem avaliados",
+                "operationId": "02378cb8630cced8f002c749426681c6",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página para paginação",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes mais bem avaliados retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "page": {
+                                            "type": "integer"
+                                        },
+                                        "total_pages": {
+                                            "type": "integer"
+                                        },
+                                        "total_results": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao buscar filmes"
+                    }
+                }
+            }
+        },
+        "/api/movies/search": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Busca filmes na API do TMDB com base no nome informado",
+                "operationId": "d1b311a7c649ae1f44b4466941a0c1c4",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do filme para buscar",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultados da busca retornados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "results": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        },
+                                        "page": {
+                                            "type": "integer"
+                                        },
+                                        "total_pages": {
+                                            "type": "integer"
+                                        },
+                                        "total_results": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro: Nome não informado"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Favorites",
+            "description": "Favorites"
+        },
+        {
+            "name": "Movies",
+            "description": "Movies"
+        }
+    ]
+}
