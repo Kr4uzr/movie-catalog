@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('movie_title');
             $table->text('overview')->nullable();
             $table->string('poster_path')->nullable();
-            $table->string('release_date')->nullable();
-            $table->string('trailer_url')->nullable();
+            $table->date('release_date')->nullable();
             $table->float('rating', 3, 1)->nullable();
             $table->timestamps();
         });

@@ -46,10 +46,8 @@ class FavoritesController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"id_tmdb", "movie_title"},
+     *             required={"id_tmdb"},
      *             @OA\Property(property="id_tmdb", type="integer", description="ID do filme no TMDB"),
-     *             @OA\Property(property="movie_title", type="string", description="Título do filme"),
-     *             @OA\Property(property="poster_path", type="string", description="Caminho do poster do filme", nullable=true)
      *         )
      *     ),
      *     @OA\Response(
@@ -57,9 +55,13 @@ class FavoritesController extends Controller
      *         description="Filme adicionado aos favoritos com sucesso",
      *         @OA\JsonContent(
      *             type="object",
+     *             @OA\Property(property="id_tmdb", type="bigint unsigned"),
      *             @OA\Property(property="id_tmdb", type="integer"),
      *             @OA\Property(property="movie_title", type="string"),
-     *             @OA\Property(property="poster_path", type="string", nullable=true),
+     *             @OA\Property(property="overview", type="string"),
+     *             @OA\Property(property="poster_path", type="string"),
+     *             @OA\Property(property="realease_date", type="string"),
+     *             @OA\Property(property="rating", type="float"),
      *             @OA\Property(property="created_at", type="string", format="date-time")
      *         )
      *     ),
