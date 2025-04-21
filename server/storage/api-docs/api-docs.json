@@ -56,22 +56,12 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "id_tmdb",
-                                    "movie_title"
+                                    "id_tmdb"
                                 ],
                                 "properties": {
                                     "id_tmdb": {
                                         "description": "ID do filme no TMDB",
                                         "type": "integer"
-                                    },
-                                    "movie_title": {
-                                        "description": "Título do filme",
-                                        "type": "string"
-                                    },
-                                    "poster_path": {
-                                        "description": "Caminho do poster do filme",
-                                        "type": "string",
-                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -92,9 +82,18 @@
                                         "movie_title": {
                                             "type": "string"
                                         },
+                                        "overview": {
+                                            "type": "string"
+                                        },
                                         "poster_path": {
-                                            "type": "string",
-                                            "nullable": true
+                                            "type": "string"
+                                        },
+                                        "realease_date": {
+                                            "type": "string"
+                                        },
+                                        "rating": {
+                                            "type": "number",
+                                            "format": "float"
                                         },
                                         "created_at": {
                                             "type": "string",
@@ -217,13 +216,13 @@
                 }
             }
         },
-        "/api/movies/search": {
+        "/api/movies/searchByName": {
             "get": {
                 "tags": [
                     "Movies"
                 ],
                 "summary": "Busca filmes na API do TMDB com base no nome informado",
-                "operationId": "d1b311a7c649ae1f44b4466941a0c1c4",
+                "operationId": "ac8529986d872372aadab988dd933722",
                 "parameters": [
                     {
                         "name": "name",
@@ -265,6 +264,86 @@
                     },
                     "400": {
                         "description": "Erro: Nome não informado"
+                    }
+                }
+            }
+        },
+        "/api/movies/searchById/{id_tmdb}": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Busca detalhes de um filme pelo ID do TMDB",
+                "operationId": "35e1a6e790e7a89e56b1fd776773b595",
+                "parameters": [
+                    {
+                        "name": "id_tmdb",
+                        "in": "path",
+                        "description": "ID do filme no TMDB",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do filme retornados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "ID do filme",
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "description": "Título do filme",
+                                            "type": "string"
+                                        },
+                                        "overview": {
+                                            "description": "Resumo do filme",
+                                            "type": "string"
+                                        },
+                                        "poster_path": {
+                                            "description": "Caminho do poster do filme",
+                                            "type": "string"
+                                        },
+                                        "release_date": {
+                                            "description": "Data de lançamento",
+                                            "type": "string",
+                                            "format": "date"
+                                        },
+                                        "vote_average": {
+                                            "description": "Nota média do filme",
+                                            "type": "number",
+                                            "format": "float"
+                                        },
+                                        "vote_count": {
+                                            "description": "Número de votos",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erro ao buscar filme",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Mensagem de erro",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

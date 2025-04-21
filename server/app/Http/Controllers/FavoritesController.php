@@ -31,7 +31,7 @@ class FavoritesController extends Controller
      */
     public function index(): JsonResponse
     {
-        $favorites = MoviesCatalogFavorites::select('id_tmdb', 'movie_title', 'poster_path', 'created_at')
+        $favorites = MoviesCatalogFavorites::select('id_tmdb', 'movie_title', 'overview', 'poster_path', 'release_date', 'rating', 'created_at')
             ->orderByDesc('created_at')
             ->get();
 
@@ -55,7 +55,6 @@ class FavoritesController extends Controller
      *         description="Filme adicionado aos favoritos com sucesso",
      *         @OA\JsonContent(
      *             type="object",
-     *             @OA\Property(property="id_tmdb", type="bigint unsigned"),
      *             @OA\Property(property="id_tmdb", type="integer"),
      *             @OA\Property(property="movie_title", type="string"),
      *             @OA\Property(property="overview", type="string"),
@@ -75,11 +74,26 @@ class FavoritesController extends Controller
     {
         $validated = $request->validate([
             'id_tmdb' => 'required|integer|unique:movies_catalog_favorites,id_tmdb',
-            'movie_title' => 'required|string|max:255',
-            'poster_path' => 'nullable|string|max:255'
         ]);
 
-        $favorite = MoviesCatalogFavorites::create($validated);
+        $TMDBController = new TMDBController();
+        $movie = $TMDBController->searchById($validated['id_tmdb']);
+
+        if ($movie->getStatusCode() !== 200) {
+            return response()->json(['error' => 'Filme não encontrado!'], 404);
+        }
+        $movie = json_decode($movie->getContent(), true);
+
+        $movieDetails = [
+            'id_tmdb' => $movie['id'],
+            'movie_title' => $movie['title'],
+            'overview' => $movie['overview'],
+            'poster_path' => $movie['poster_path'],
+            'release_date' => $movie['release_date'],
+            'rating' => $movie['vote_average'] ?? null,
+        ];
+
+        $favorite = MoviesCatalogFavorites::create($movieDetails);
 
         return response()->json($favorite, 201);
     }

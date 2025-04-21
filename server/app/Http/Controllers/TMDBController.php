@@ -59,7 +59,7 @@ class TMDBController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/movies/search",
+     *     path="/api/movies/searchByName",
      *     summary="Busca filmes na API do TMDB com base no nome informado",
      *     tags={"Movies"},
      *     @OA\Parameter(
@@ -86,7 +86,7 @@ class TMDBController extends Controller
      *     )
      * )
      */
-    public function search(Request $request): JsonResponse
+    public function searchByName(Request $request): JsonResponse
     {
         $name = $request->query('name');
 
@@ -99,6 +99,57 @@ class TMDBController extends Controller
             'language' => $this->language,
             'query' => $name,
         ]);
+
+        return response()->json($response->json());
+    }
+
+
+    /**
+     * @OA\Get(
+     *     path="/api/movies/searchById/{id_tmdb}",
+     *     summary="Busca detalhes de um filme pelo ID do TMDB",
+     *     tags={"Movies"},
+     *     @OA\Parameter(
+     *         name="id_tmdb",
+     *         in="path",
+     *         description="ID do filme no TMDB",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detalhes do filme retornados com sucesso",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="id", type="integer", description="ID do filme"),
+     *             @OA\Property(property="title", type="string", description="Título do filme"),
+     *             @OA\Property(property="overview", type="string", description="Resumo do filme"),
+     *             @OA\Property(property="poster_path", type="string", description="Caminho do poster do filme"),
+     *             @OA\Property(property="release_date", type="string", format="date", description="Data de lançamento"),
+     *             @OA\Property(property="vote_average", type="number", format="float", description="Nota média do filme"),
+     *             @OA\Property(property="vote_count", type="integer", description="Número de votos")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Erro ao buscar filme",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string", description="Mensagem de erro")
+     *         )
+     *     )
+     * )
+     */
+    public function searchById($id_tmdb): JsonResponse
+    {
+        $response = Http::get("{$this->baseUrl}/movie/{$id_tmdb}", [
+            'api_key' => env('TMDB_API_KEY'),
+            'language' => $this->language,
+        ]);
+
+        if ($response->failed()) {
+            return response()->json(['error' => "Erro ao buscar filme"], 500);
+        }
 
         return response()->json($response->json());
     }

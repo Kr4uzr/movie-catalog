@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 
 # TMDB Controller
 Route::get('/movies/list-top-rateds', [TMDBController::class, 'listTopRateds']);
-Route::get('/movies/search', [TMDBController::class, 'search']);
+Route::get('/movies/searchByName', [TMDBController::class, 'searchByName']);
+Route::get('/movies/searchById/{id_tmdb}', [TMDBController::class, 'searchById']);
 
 # Favorites Controller
 Route::get('/favorites', [FavoritesController::class, 'index']);
