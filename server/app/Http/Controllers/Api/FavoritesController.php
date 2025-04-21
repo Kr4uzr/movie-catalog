@@ -36,32 +36,14 @@ class FavoritesController extends Controller
      *             @OA\Property(property="message", type="string")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Nenhum filme favorito encontrado",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="success", type="boolean"),
-     *             @OA\Property(property="data", type="null"),
-     *             @OA\Property(property="message", type="string")
-     *         )
-     *     )
      * )
      */
     public function index(): JsonResponse
     {
         try {
-            $favorites = MoviesCatalogFavorites::select('id_tmdb', 'movie_title', 'overview', 'poster_path', 'release_date', 'rating', 'created_at')
+            $favorites = MoviesCatalogFavorites::select('id', 'id_tmdb', 'movie_title', 'overview', 'poster_path', 'release_date', 'rating', 'created_at')
             ->orderByDesc('created_at')
             ->get();
-
-            if($favorites->isEmpty()) {
-                return response()->json([
-                    'success' => false,
-                    'data' => null,
-                    'message' => 'Nenhum filme favorito encontrado!'],
-                 404);
-            }
 
             return response()->json([
                 'success' => true,
@@ -149,12 +131,12 @@ class FavoritesController extends Controller
             $movie = json_decode($movie->getContent(), true);
 
             $movieDetails = [
-                'id_tmdb' => $movie['id'],
-                'movie_title' => $movie['title'],
-                'overview' => $movie['overview'],
-                'poster_path' => $movie['poster_path'],
-                'release_date' => $movie['release_date'],
-                'rating' => $movie['vote_average'] ?? null,
+                'id_tmdb' => $movie['data']['id'],
+                'movie_title' => $movie['data']['title'],
+                'overview' => $movie['data']['overview'],
+                'poster_path' => $movie['data']['poster_path'],
+                'release_date' => $movie['data']['release_date'],
+                'rating' => $movie['data']['vote_average'] ?? null,
             ];
 
             $favorite = MoviesCatalogFavorites::create($movieDetails);
