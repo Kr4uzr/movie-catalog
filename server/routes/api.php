@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\TMDBController;
-use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\Api\TMDBController;
+use App\Http\Controllers\Api\FavoritesController;
 use Illuminate\Support\Facades\Route;
 
 # TMDB Controller
