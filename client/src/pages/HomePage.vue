@@ -10,18 +10,15 @@
     </div><br>
     <div v-if="movies.length" class="movie-list">
         <div v-for="movie in movies" :key="movie.id" class="movie-item">
-            <router-link :to="`/movie/${movie.id}`">
                 <img
                 :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
                 :alt="movie.title"
                 class="movie-poster"
+                @click="openModal(movie)"
                 />
-            </router-link>
             <div class="movie-info">
                 <!-- Clique no nome redireciona -->
-                <router-link :to="`/movie/${movie.id}`" class="movie-title">
                 <h3>{{ movie.title }}</h3>
-                </router-link>
                 <div class="rating-container">
                     <p>Avaliação: {{ movie.vote_average.toFixed(1) }} / 10</p>
                     <button
@@ -48,6 +45,19 @@
             </button>
         </div>
     </div>
+    <div v-if="showModal && selectedMovie" class="modal-overlay" @click.self="closeModal">
+        <div class="modal-content">
+            <h2>{{ selectedMovie.title }}</h2><br>
+            <img
+            :src="`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`"
+            :alt="selectedMovie.title"
+            />
+            <p><strong>Descrição:</strong> {{ selectedMovie.overview }}</p>
+            <p><strong>Data de Lançamento:</strong> {{ formatDate(selectedMovie.release_date) }}</p>
+            <p><strong>Avaliação:</strong> {{ selectedMovie.vote_average.toFixed(1) }} / 10</p>
+            <button @click="closeModal" class="close-button">Fechar</button>
+        </div>
+    </div>
 </template>
   
 <script lang="ts">
@@ -57,8 +67,10 @@
     interface Movie {
         id: number;
         title: string;
-        vote_average: number; // Rating do filme
-        poster_path: string; // Caminho da imagem do filme
+        vote_average: number;
+        poster_path: string;
+        overview: string;
+        release_date: string;
     }
 
     interface Favorite {
@@ -73,6 +85,23 @@
         const favorites = ref<Favorite[]>([]); // Lista de favoritos com IDs do banco e do TMDB
         const searchQuery = ref('');
         const currentPage = ref(1); // Página atual
+        const showModal = ref(false);
+        const selectedMovie = ref<Movie | null>(null);
+
+        const openModal = (movie: Movie) => {
+            selectedMovie.value = movie;
+            showModal.value = true;
+        };
+
+        const closeModal = () => {
+            showModal.value = false;
+            selectedMovie.value = null;
+        };
+        const formatDate = (date: string) => {
+            if (!date) return 'Data não disponível';
+            const [year, month, day] = date.split('-');
+            return `${day}/${month}/${year}`;
+        };
 
         const fetchMovies = async (page: number = 1) => {
             try {
@@ -146,7 +175,7 @@
         fetchMovies();
         fetchFavorites();
 
-        return { movies, toggleFavorite, isFavorite, searchMovies, searchQuery, currentPage, changePage, };
+        return { movies, toggleFavorite, isFavorite, searchMovies, searchQuery, currentPage, changePage, showModal, openModal, closeModal,formatDate, selectedMovie};
     },
     });
 </script>
@@ -248,4 +277,57 @@
     .search-bar input::placeholder {
         color: #42b883;
     }
+
+    /* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.modal-content img {
+  width: 50%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.modal-content p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #bbbbbb;
+  text-align: left;
+}
+
+.close-button {
+  background-color: #42b883;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.close-button:hover {
+  background-color: #369f6b;
+}
 </style>
