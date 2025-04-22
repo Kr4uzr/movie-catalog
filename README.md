@@ -75,8 +75,8 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
     - `POST /api/favorites` - Adiciona um filme aos favoritos.
     - `DELETE /api/favorites/{id}` - Remove um filme dos favoritos.
     - `GET /movies/list-top-rateds` - Busca filmes com melhores classificações
-    - `GET /movies/searchByName' - Busca filmes pelo nome
-    - `GET /movies/searchById/{id_tmdb} - Busca filmes pelo id
+    - `GET /movies/searchByName` - Busca filmes pelo nome
+    - `GET /movies/searchById/{id_tmdb}` - Busca filmes pelo id
 
 - **Controllers**:
   - Arquivo: `server/app/Http/Controllers/Api/FavoritesController.php`
