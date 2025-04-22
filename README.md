@@ -207,3 +207,13 @@ movie-catalog/
 ├── docker-compose.yml     # Configuração do Docker
 └── README.md              # Documentação do projeto
 ```
+
+---
+
+## 📷 Imagens do Projeto
+
+![image](https://github.com/user-attachments/assets/49423b92-2f21-41f6-8a44-590a6902050e)
+![image](https://github.com/user-attachments/assets/1f155a98-f538-40ff-949c-95c99889ed85)
+![image](https://github.com/user-attachments/assets/97b47f6c-aa5f-4be5-9f15-9080008a2271)
+
+
