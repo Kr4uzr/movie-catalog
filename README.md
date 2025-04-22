@@ -48,18 +48,23 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
 
      TMDB_API_KEY=sua_chave_da_api
      ```
-
-3. **Suba os containers com Docker Compose**:
+3. **Rode um composer install dentro da pasta server**:
+   ```bash
+   cd server/
+   composer install
+   ```
+   
+4. **Suba os containers com Docker Compose**:
    ```bash
    docker-compose up -d
    ```
 
-4. **Execute as migrações**:
+5. **Execute as migrações**:
    ```bash
    docker exec -it laravel_app php artisan migrate
    ```
 
-5. **Acesse a aplicação**:
+6. **Acesse a aplicação**:
    - Backend (Laravel): [http://localhost:8000](http://localhost:8000)
    - Frontend (Vue.js): [http://localhost:5173](http://localhost:5173)
 
