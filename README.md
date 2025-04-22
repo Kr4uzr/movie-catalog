@@ -133,7 +133,7 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
 ### Testando automaticamente:
 1. Execute os testes do backend com PHPUnit:
    ```bash
-   docker exec -it laravel_app  php artisan test
+   docker exec -it laravel_app php artisan test
    ```
 2. Os testes validarão:
    - Rotas de favoritos (`/api/favorites`).
