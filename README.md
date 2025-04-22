@@ -34,6 +34,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
 2. **Configure o arquivo `.env`**:
    - Copie o arquivo `.env.example` para `.env`:
      ```bash
+     cd server
      cp .env.example .env
      ```
    - Configure as variáveis de ambiente, como o banco de dados e a chave da API do TMDB:
