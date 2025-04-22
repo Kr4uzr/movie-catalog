@@ -69,9 +69,10 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
    docker-compose up -d
    ```
 
-5. **Execute as migrações**:
+5. **Execute as migrações e gere uma key de aplicação**:
    ```bash
    docker exec -it laravel_app php artisan migrate
+   docker exec -it laravel_app php artisan key:generate
    ```
 
 7. **Acesse a aplicação**:
