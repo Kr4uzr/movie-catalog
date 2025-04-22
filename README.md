@@ -48,13 +48,23 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
 
      TMDB_API_KEY=sua_chave_da_api
      ```
-3. **Rode um composer install dentro da pasta server**:
+3. **Configure o arquivo `docker-compose.yml`**:
+   - Configure o environment do mysql dentro de docker-compose.yml
+     ```
+     environment:
+        MYSQL_ROOT_PASSWORD: root_password
+        MYSQL_DATABASE: database
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+     ```
+     
+4. **Rode um composer install dentro da pasta server**:
    ```bash
    cd server/
    composer install
    ```
    
-4. **Suba os containers com Docker Compose**:
+5. **Suba os containers com Docker Compose**:
    ```bash
    docker-compose up -d
    ```
@@ -64,7 +74,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
    docker exec -it laravel_app php artisan migrate
    ```
 
-6. **Acesse a aplicação**:
+7. **Acesse a aplicação**:
    - Backend (Laravel): [http://localhost:8000](http://localhost:8000)
    - Frontend (Vue.js): [http://localhost:5173](http://localhost:5173)
 
