@@ -42,56 +42,70 @@
     </div>
 </template>
   
-<script>
-import axios from 'axios';
+<script lang="ts">
+    import { defineComponent, ref, onMounted } from 'vue';
+    import axios from 'axios';
 
-export default {
-    data() {
-        return {
-            favorites: [],
-            showModal: false, // Controla a exibição do modal
-            selectedMovie: null, // Armazena o filme selecionado
-        };
-    },
-    methods: {
-        async fetchFavorites() {
-            try {
-                const response = await axios.get('/api/favorites');
-                this.favorites = response.data.data;
-            } catch (error) {
-                console.error('Erro ao carregar favoritos:', error);
-            }
-        },
-        async removeFavorite(favorite) {
-            try {
-                await axios.delete(`/api/favorites/${favorite.id}`);
-                this.favorites = this.favorites.filter((fav) => fav.id !== favorite.id);
-            } catch (error) {
-                console.error('Erro ao remover favorito:', error);
-            }
-        },
-        openModal(favorite) {
-            this.selectedMovie = favorite; // Define o filme selecionado
-            this.showModal = true; // Exibe o modal
-        },
-        closeModal() {
-            this.showModal = false; // Fecha o modal
-            this.selectedMovie = null; // Limpa o filme selecionado
-        },
-        formatDate (date) {
-            if (!date) return 'Data não disponível';
-            const [year, month, day] = date.split('-');
-            return `${day}/${month}/${year}`;
+    interface Favorite {
+        id: number;
+        title: string;
+        vote_average: number;
+        poster_path: string;
+        overview: string;
+        release_date: string;
+    }
+
+    export default defineComponent({
+        name: 'FavoritesPage',
+        setup() {
+            const favorites = ref<Favorite[]>([]);
+            const showModal = ref(false);
+            const selectedMovie = ref<Favorite | null>(null);
+
+            const fetchFavorites = async () => {
+                try {
+                    const response = await axios.get('/api/favorites');
+                    favorites.value = response.data.data;
+                } catch (error) {
+                    console.error('Erro ao carregar favoritos:', error);
+                }
+            };
+
+            const removeFavorite = async (favorite: Favorite) => {
+                try {
+                    await axios.delete(`/api/favorites/${favorite.id}`);
+                    favorites.value = favorites.value.filter((fav) => fav.id !== favorite.id);
+                } catch (error) {
+                    onsole.error('Erro ao remover favorito:', error);
+                }
+            };
+
+            const openModal = (favorite: Favorite) => {
+                selectedMovie.value = favorite;
+                showModal.value = true;
+            };
+
+            const closeModal = () => {
+                showModal.value = false;
+                selectedMovie.value = null;
+            };
+
+            const formatDate = (date: string) => {
+                if (!date) return 'Data não disponível';
+                const [year, month, day] = date.split('-');
+                return `${day}/${month}/${year}`;
+            };
+
+            onMounted(() => {
+                fetchFavorites();
+            });
+
+            return { favorites, showModal, selectedMovie, fetchFavorites, removeFavorite, openModal, closeModal, formatDate };
         }
-    },
-    async created() {
-        this.fetchFavorites();
-    },
-};
+    });
 </script>
   
 <style scoped>
- 
     .movie-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Layout responsivo */
@@ -118,20 +132,17 @@ export default {
         transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
     }
 
-    .movie-poster {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
     .movie-info {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 10px;
         text-align: center;
+    }
+
+    .movie-info h3 {
+        margin: 0;
+        font-size: 18px;
     }
 
     .movie-title {
@@ -141,11 +152,6 @@ export default {
 
     .movie-title:hover h3 {
         text-decoration: underline;
-    }
-
-    .movie-info h3 {
-        margin: 0;
-        font-size: 18px;
     }
 
     .rating-container {
@@ -180,92 +186,12 @@ export default {
         color: #bbbbbb;
     }
 
-    movie-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Layout responsivo */
-        gap: 20px;
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .movie-item {
-        background-color: #1e1e1e;
-        color: #ffffff;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        transition: transform 0.2s ease;
-    }
-
-    .movie-item:hover {
-        transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
-    }
-
     .movie-poster {
         width: 100%;
         height: 250px;
         object-fit: cover;
         border-radius: 5px;
         cursor: pointer;
-    }
-
-    .movie-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .movie-title {
-        text-decoration: none;
-        color: #ffffff;
-    }
-
-    .movie-title:hover h3 {
-        text-decoration: underline;
-    }
-
-    .movie-info h3 {
-        margin: 0;
-        font-size: 18px;
-    }
-
-    .rating-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 5px;
-    }
-
-    .rating-container p {
-        margin: 0;
-        font-size: 14px;
-        color: #bbbbbb;
-    }
-
-    .favorite-button {
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #f39c12;
-    }
-
-    .favorite-button:hover {
-        color: #e67e22;
-    }
-
-    p {
-        text-align: center;
-        font-size: 1rem;
-        color: #bbbbbb;
     }
 
     .modal-overlay {
@@ -282,7 +208,6 @@ export default {
         overflow: hidden;
     }
 
-    /* Modal Content */
     .modal-content {
         background-color: #1e1e1e;
         color: #ffffff;
