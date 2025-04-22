@@ -27,7 +27,7 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/seu-usuario/movie-catalog.git
+   git clone https://github.com/kr4uzr/movie-catalog.git
    cd movie-catalog
    ```
 
