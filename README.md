@@ -143,7 +143,7 @@ Para utilizar a API do TMDB, você precisa de uma chave de API. Siga os passos a
 
 ## 🌐 Como subir o frontend separado (Vue.js)
 
-Se o frontend estiver separado do backend, siga os passos abaixo para rodá-lo:
+Siga os passos abaixo para rodá-lo:
 
 1. **Acesse o diretório do frontend**:
    ```bash
