@@ -9,15 +9,15 @@ Este é um projeto de catálogo de filmes que utiliza Laravel no backend e Vue.j
 
 | Tecnologia         | Versão         | Descrição                                                                 |
 |--------------------|----------------|---------------------------------------------------------------------------|
-| **Laravel**        | 12.x           | Framework PHP utilizado para o backend e gerenciamento da API.           |
-| **PHP**            | 8.3.x          | Linguagem de programação para o backend.                                 |
-| **Vue.js**         | 3.x            | Framework JavaScript utilizado para o frontend.                          |
-| **MySQL**          | 8.x            | Banco de dados relacional utilizado para armazenar os dados.             |
-| **Docker**         | 28.x           | Plataforma para criar e gerenciar containers.                            |
-| **PHPUnit**        | 11.x           | Framework de testes para o backend.                                      |
-| **Swagger**        | 9.x            | Ferramenta para documentação e teste da API.                             |
-| **Node.js**        | 23.x           | Ambiente de execução JavaScript para o frontend.                         |
-| **NPM**            | 10.x           | Gerenciador de pacotes para o Node.js.                                   |
+| **Laravel**        | 12.9.2         | Framework PHP utilizado para o backend e gerenciamento da API.           |
+| **PHP**            | 8.3.20         | Linguagem de programação para o backend.                                 |
+| **Vue.js**         | 3.5.13         | Framework JavaScript utilizado para o frontend.                          |
+| **MySQL**          | 8.0.42         | Banco de dados relacional utilizado para armazenar os dados.             |
+| **Docker**         | 28.1.1         | Plataforma para criar e gerenciar containers.                            |
+| **PHPUnit**        | 11.5.17        | Framework de testes para o backend.                                      |
+| **Swagger**        | 9.0            | Ferramenta para documentação e teste da API.                             |
+| **Node.js**        | 23.11.0        | Ambiente de execução JavaScript para o frontend.                         |
+| **NPM**            | 10.9.2         | Gerenciador de pacotes para o Node.js.                                   |
 
 ---
 
@@ -53,9 +53,9 @@ Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Do
    docker-compose up -d
    ```
 
-4. **Execute as migrações e seeders**:
+4. **Execute as migrações**:
    ```bash
-   docker exec -it movie-catalog-app php artisan migrate --seed
+   docker exec -it laravel_app php artisan migrate
    ```
 
 5. **Acesse a aplicação**:
@@ -74,6 +74,9 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
     - `GET /api/favorites` - Lista os filmes favoritos.
     - `POST /api/favorites` - Adiciona um filme aos favoritos.
     - `DELETE /api/favorites/{id}` - Remove um filme dos favoritos.
+    - `GET /movies/list-top-rateds` - Busca filmes com melhores classificações
+    - `GET /movies/searchByName' - Busca filmes pelo nome
+    - `GET /movies/searchById/{id_tmdb} - Busca filmes pelo id
 
 - **Controllers**:
   - Arquivo: `server/app/Http/Controllers/Api/FavoritesController.php`
@@ -81,12 +84,19 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
     - `index` - Lista os favoritos.
     - `store` - Adiciona um favorito.
     - `delete` - Remove um favorito.
+  - Arquivo: `server/app/Http/Controllers/Api/TMDBController.php`
+  - Métodos principais:
+    - `listTopRateds` - Lista filmes com melhores classificações.
+    - `searchByName` - Procura um filme pelo nome.
+    - `searchById` - Procura um filme pelo id.
 
 - **Models**:
-  - Arquivo: `server/app/Models/Favorite.php`
+  - Arquivo: `server/app/Models/MoviesCatalogFavorites.php`
   - Representa o modelo de dados para os filmes favoritos.
 
 - **Views**:
+  - Arquivo: `client/src/pages/HomePage.vue`
+  - Exibe a interface de filmes com melhores classificações.
   - Arquivo: `client/src/pages/FavoritesPage.vue`
   - Exibe a interface para listar e gerenciar os filmes favoritos.
 
@@ -96,8 +106,7 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
 
 ### Testando manualmente:
 1. Acesse a interface web:
-   - Backend: [http://localhost:8000](http://localhost:8000)
-   - Frontend: [http://localhost:5173](http://localhost:5173)
+   - [http://localhost:5173](http://localhost:5173)
 2. Use a interface para:
    - Listar os filmes mais bem avaliados.
    - Buscar filmes por nome.
@@ -107,16 +116,15 @@ O CRUD de filmes favoritos está implementado nos seguintes arquivos e diretóri
 ### Testando automaticamente:
 1. Execute os testes do backend com PHPUnit:
    ```bash
-   docker exec -it movie-catalog-app php artisan test
+   docker exec -it laravel_app  php artisan test
    ```
 2. Os testes validarão:
-   - Rotas de filmes (`/api/movies`).
    - Rotas de favoritos (`/api/favorites`).
    - Estrutura de resposta da API.
 
 ---
 
-📜 Documentação da API via Swagger
+## 📜 Documentação da API via Swagger
 A documentação da API foi gerada utilizando o Swagger. Para acessá-la:
 
 Certifique-se de que o backend está rodando.
@@ -133,7 +141,7 @@ Para utilizar a API do TMDB, você precisa de uma chave de API. Siga os passos a
 1. Acesse o site oficial do TMDB: [https://www.themoviedb.org/](https://www.themoviedb.org/).
 2. Crie uma conta ou faça login.
 3. Vá para a seção **API** no seu perfil.
-4. Clique em **"Create API Key"** e siga as instruções.
+4. Clique em **"API Subscription"** e siga as instruções.
 5. Copie a chave gerada e adicione-a ao arquivo `.env`:
    ```
    TMDB_API_KEY=sua_chave_da_api
@@ -143,7 +151,7 @@ Para utilizar a API do TMDB, você precisa de uma chave de API. Siga os passos a
 
 ## 🌐 Como subir o frontend separado (Vue.js)
 
-Siga os passos abaixo para rodá-lo:
+Caso queira rodar somente o frontend, siga os passos abaixo para rodá-lo:
 
 1. **Acesse o diretório do frontend**:
    ```bash
