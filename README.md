@@ -5,22 +5,6 @@ Este é um projeto de catálogo de filmes que utiliza Laravel no backend e Vue.j
 
 ---
 
-## 📋 Tecnologias Utilizadas
-
-| Tecnologia         | Versão         | Descrição                                                                 |
-|--------------------|----------------|---------------------------------------------------------------------------|
-| **Laravel**        | 12.x           | Framework PHP utilizado para o backend e gerenciamento da API.           |
-| **PHP**            | 8.3.x          | Linguagem de programação para o backend.                                 |
-| **Vue.js**         | 3.x            | Framework JavaScript utilizado para o frontend.                          |
-| **MySQL**          | 8.x            | Banco de dados relacional utilizado para armazenar os dados.             |
-| **Docker**         | 28.x           | Plataforma para criar e gerenciar containers.                            |
-| **PHPUnit**        | 11.x           | Framework de testes para o backend.                                      |
-| **Swagger**        | 9.x            | Ferramenta para documentação e teste da API.                             |
-| **Node.js**        | 23.x           | Ambiente de execução JavaScript para o frontend.                         |
-| **NPM**            | 10.x           | Gerenciador de pacotes para o Node.js.                                   |
-
----
-
 ## 🚀 Como rodar o projeto localmente com Docker
 
 Siga os passos abaixo para configurar e rodar o projeto localmente utilizando Docker:
