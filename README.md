@@ -1,4 +1,4 @@
-```markdown
+
 # Movie Catalog
 
 Este é um projeto de catálogo de filmes que utiliza Laravel no backend e Vue.js no frontend. Ele permite listar, buscar e gerenciar filmes favoritos, integrando-se à API do TMDB para obter informações sobre os filmes.
